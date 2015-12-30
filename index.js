@@ -4,10 +4,10 @@ var Service, Characteristic;
 module.exports = function(homebridge){
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  homebridge.registerAccessory("homebridge-zway-switch", "ZWayBinarySwitch", ZWayBinarySwitchAccessory);
+  homebridge.registerAccessory("homebridge-zway-dimmer", "ZWayDimmer", ZWayDimmerAccessory);
 }
 
-function ZWayBinarySwitchAccessory(log, config) {
+function ZWayDimmerAccessory(log, config) {
   this.log = log;
 
   // url info
@@ -19,7 +19,7 @@ function ZWayBinarySwitchAccessory(log, config) {
   this.session_cookie = config["session_cookie"];
 }
 
-ZWayBinarySwitchAccessory.prototype = {
+ZWayDimmerAccessory.prototype = {
 
   httpRequest: function(url, method, callback) {
     request({
@@ -35,8 +35,8 @@ ZWayBinarySwitchAccessory.prototype = {
     })
   },
 
-  getSwitchState: function(callback) {
-    this.log("getSwitchState");
+  getDimmerState: function(callback) {
+    this.log("getDimmerState");
 
     //response.headers['content-type']
 
@@ -59,12 +59,12 @@ ZWayBinarySwitchAccessory.prototype = {
       function (error, response, body) {
         var data = JSON.parse(body);
 
-		self.log( body )
-		self.log( data["data"] )
+		    self.log( body )
+		    self.log( data["data"] )
 
         var level = data["data"]["metrics"]["level"];
 
-        if (level == "on") {
+        if (level == "on" || level > 95) {
           callback( null, true );
         }else{
           callback( null, false );
@@ -73,7 +73,7 @@ ZWayBinarySwitchAccessory.prototype = {
     });
   },
 
-  setSwitchState: function(switchState, callback){
+  setDimmerState: function(switchState, callback){
     this.log("setSwitchState");
 
     var command = "";
@@ -120,13 +120,13 @@ ZWayBinarySwitchAccessory.prototype = {
 
     informationService
       .setCharacteristic(Characteristic.Manufacturer, "Jeff McFadden")
-      .setCharacteristic(Characteristic.Model, "ZWaySwitch")
-      .setCharacteristic(Characteristic.SerialNumber, "ZW-S-1");
+      .setCharacteristic(Characteristic.Model, "ZWayDimmer")
+      .setCharacteristic(Characteristic.SerialNumber, "ZW-D-1");
 
-    var switchService = new Service.Switch();
+    var switchService = new Service.Lightbulb();
 
-    switchService.getCharacteristic( Characteristic.On ).on( 'get', this.getSwitchState.bind(this) );
-    switchService.getCharacteristic( Characteristic.On ).on( 'set', this.setSwitchState.bind(this) );
+    switchService.getCharacteristic( Characteristic.On ).on( 'get', this.setDimmerState.bind(this) );
+    switchService.getCharacteristic( Characteristic.On ).on( 'set', this.setDimmerState.bind(this) );
 
     return [informationService, switchService];
   }
