@@ -1,5 +1,5 @@
 {
-  "name": "homebridge-zway-switch",
+  "name": "homebridge-zway-dimmer",
   "version": "0.0.1",
   "description": "ZWay Switch plugin for homebridge: https://github.com/nfarina/homebridge",
   "license": "MIT",
@@ -8,10 +8,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jeffmcfadden/homebridge-zway-switch.git"
+    "url": "git://github.com/jeffmcfadden/homebridge-zway-dimmer.git"
   },
   "bugs": {
-    "url": "http://github.com/jeffmcfadden/homebridge-zway-switch/issues"
+    "url": "http://github.com/jeffmcfadden/homebridge-zway-dimmer/issues"
   },
   "engines": {
     "node": ">=0.12.0",

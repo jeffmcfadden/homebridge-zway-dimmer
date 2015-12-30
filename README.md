@@ -1,1 +1,1 @@
-# homebridge-zway-switch
+# homebridge-zway-dimmer

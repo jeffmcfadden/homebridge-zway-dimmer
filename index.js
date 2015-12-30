@@ -125,7 +125,7 @@ ZWayDimmerAccessory.prototype = {
 
     var switchService = new Service.Lightbulb();
 
-    switchService.getCharacteristic( Characteristic.On ).on( 'get', this.setDimmerState.bind(this) );
+    switchService.getCharacteristic( Characteristic.On ).on( 'get', this.getDimmerState.bind(this) );
     switchService.getCharacteristic( Characteristic.On ).on( 'set', this.setDimmerState.bind(this) );
 
     return [informationService, switchService];
